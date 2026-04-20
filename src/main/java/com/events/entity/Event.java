@@ -35,7 +35,7 @@ public class Event {
     @Column(nullable = false)
     private boolean free = true;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<EventTranslation> translations = new ArrayList<>();
 
     public enum EventType { CONFERENCE, WORKSHOP, PARTY, SPORT, CULTURAL }

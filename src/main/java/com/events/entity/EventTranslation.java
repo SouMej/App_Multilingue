@@ -20,7 +20,7 @@ public class EventTranslation {
     private Event event;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "lang", nullable = false, length = 2)
+    @Column(name = "lang", nullable = false, length = 5)
     private Language language;
 
     @Column(nullable = false, length = 200)
