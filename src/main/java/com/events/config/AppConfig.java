@@ -135,7 +135,7 @@ public class AppConfig implements WebMvcConfigurer {
 
         Properties props = new Properties();
         props.put("hibernate.dialect",        env.getProperty("hibernate.dialect",
-                                                "org.hibernate.dialect.MySQLDialect"));
+                                                "org.hibernate.dialect.MySQL8Dialect"));
         props.put("hibernate.show_sql",       env.getProperty("hibernate.show_sql",   "true"));
         props.put("hibernate.format_sql",     env.getProperty("hibernate.format_sql", "true"));
         // update = met à jour le schéma MySQL sans supprimer les données
