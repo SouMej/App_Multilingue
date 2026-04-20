@@ -22,14 +22,11 @@
 
     <!-- Liens de navigation -->
     <div class="navbar-menu">
-      <a th:href="@{/}" class="nav-link"
-         th:classappend="${#request != null and (#request.requestURI == '/' or
-                           #request.requestURI == '/home')} ? ' active' : ''">
+      <a th:href="@{/}" class="nav-link">
         <span th:text="#{nav.home}">Accueil</span>
       </a>
       <sec:authorize access="isAuthenticated()">
-        <a th:href="@{/events}" class="nav-link"
-           th:classappend="${#request != null and #request.requestURI != null and #request.requestURI.contains('/events')} ? ' active' : ''">
+        <a th:href="@{/events}" class="nav-link">
           <span th:text="#{nav.events}">Événements</span>
         </a>
       </sec:authorize>
