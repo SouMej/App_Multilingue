@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:lang="${#locale.language}"
+      th:dir="${#locale.language == 'ar'} ? 'rtl' : 'ltr'">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title th:text="#{events.title}">Événements</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Noto+Sans+Arabic:wght@400;600&display=swap"
+        rel="stylesheet"/>
+  <link rel="stylesheet" th:href="@{/resources/css/main.css}"/>
+</head>
+<body class="page-events">
+
+  <div th:replace="~{common/navbar :: navbar}"></div>
+
+  <main class="ev-main">
+    <div class="container">
+
+      <!-- ===== BARRE DE RECHERCHE ===== -->
+      <!--
+        Méthode GET (pas POST) car une recherche doit pouvoir être
+        bookmarkée et partagée : /events?q=atelier&type=WORKSHOP
+      -->
+      <section class="search-box">
+        <h1 th:text="#{events.search.title}">Rechercher</h1>
+
+        <form th:action="@{/events}" method="get" class="s-form">
+
+          <!-- Champ texte -->
+          <div class="s-input-wrap">
+            <span class="s-icon">🔍</span>
+            <input type="text" name="q" id="sInput"
+                   th:value="${keyword}"
+                   th:placeholder="#{events.search.placeholder}"
+                   class="s-input" autocomplete="off"/>
+            <button type="button" class="s-clear"
+                    th:if="${keyword != null and !#strings.isEmpty(keyword)}"
+                    onclick="clearSearch()">✕</button>
+          </div>
+
+          <!-- Filtre type -->
+          <div class="s-filters">
+            <select name="type" class="s-select">
+              <option value=""
+                      th:text="#{events.filter.all}"
+                      th:selected="${selectedType == null or #strings.isEmpty(selectedType)}">
+              </option>
+              <!--
+                th:each itère sur eventTypes (Event.EventType[]) du modèle.
+                #{events.type.CONFERENCE} cherche la clé dans messages_XX.properties.
+              -->
+              <th:block th:each="t : ${eventTypes}">
+                <option th:value="${t.name()}"
+                        th:text="#{|events.type.${t.name()}|}"
+                        th:selected="${selectedType == t.name()}">
+                </option>
+              </th:block>
+            </select>
+
+            <button type="submit" class="btn btn-primary"
+                    th:text="#{events.search.button}">Chercher</button>
+
+            <a th:href="@{/events}" class="btn btn-outline"
+               th:if="${isSearch}">✕</a>
+          </div>
+        </form>
+      </section>
+
+      <!-- Compteur de résultats -->
+      <div class="res-count" th:if="${isSearch}">
+        <span th:text="#{events.results.count(${resultCount})}">X trouvé(s)</span>
+      </div>
+
+      <!-- ===== ÉTAT VIDE ===== -->
+      <div class="empty" th:if="${#lists.isEmpty(events)}">
+        <div class="empty-ico">🔎</div>
+        <h2 th:text="#{events.no.results}">Aucun résultat</h2>
+        <p  th:text="#{events.no.results.hint}">Essayez d'autres mots-clés.</p>
+        <a th:href="@{/events}" class="btn btn-primary">Voir tout</a>
+      </div>
+
+      <!-- ===== GRILLE DES ÉVÉNEMENTS ===== -->
+      <!--
+        th:each="ev : ${events}" génère une carte par événement.
+        La liste "events" vient du modèle ajouté dans EventController.
+      -->
+      <div class="ev-grid" th:unless="${#lists.isEmpty(events)}">
+
+        <article th:each="ev : ${events}" class="ev-card">
+
+          <!-- Badge type (couleur CSS selon le nom du type) -->
+          <span class="type-bdg"
+                th:classappend="${'bdg-' + #strings.toLowerCase(ev.type.name())}"
+                th:text="#{|events.type.${ev.type.name()}|}">Type</span>
+
+          <!-- Badge gratuit -->
+          <span class="free-bdg" th:if="${ev.free}"
+                th:text="#{events.card.free}">Gratuit</span>
+
+          <div class="ev-body">
+            <h3 class="ev-title" th:text="${ev.title}">Titre</h3>
+            <p  class="ev-desc"  th:text="${ev.description}">Description</p>
+          </div>
+
+          <div class="ev-meta">
+            <div class="mrow">
+              <span class="mico">📅</span>
+              <!--
+                #temporals.format() formate un LocalDateTime
+                selon le pattern et la locale courante.
+              -->
+              <span th:text="${#temporals.format(ev.eventDate, 'dd MMM yyyy')}">Date</span>
+              <span class="mtime"
+                    th:text="${#temporals.format(ev.eventDate, 'HH:mm')}">00:00</span>
+            </div>
+            <div class="mrow" th:if="${ev.location != null}">
+              <span class="mico">📍</span>
+              <span th:text="${ev.location}">Lieu</span>
+            </div>
+            <div class="mrow" th:if="${ev.capacity != null}">
+              <span class="mico">👥</span>
+              <span th:text="${ev.capacity + ' ' + #messages.msg('events.card.capacity')}">Places</span>
+            </div>
+          </div>
+
+          <div class="ev-foot">
+            <button class="btn btn-primary btn-sm"
+                    th:text="#{events.card.register}"
+                    onclick="alert('Inscription à implémenter !')">
+              S'inscrire
+            </button>
+          </div>
+
+        </article>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>
+        <span th:text="#{nav.brand}">Événements Étudiants</span>
+        &copy; 2024 — <span th:text="#{footer.rights}">Droits réservés</span>
+      </p>
+    </div>
+  </footer>
+
+  <script th:src="@{/resources/js/main.js}"></script>
+</body>
+</html>

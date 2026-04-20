@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:lang="${#locale.language}"
+      th:dir="${#locale.language == 'ar'} ? 'rtl' : 'ltr'">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title th:text="#{nav.brand}">Événements Étudiants</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Noto+Sans+Arabic:wght@400;600&display=swap"
+        rel="stylesheet"/>
+  <link rel="stylesheet" th:href="@{/resources/css/main.css}"/>
+</head>
+<body class="page-home">
+
+  <!-- Fragment navbar commun -->
+  <div th:replace="~{common/navbar :: navbar}"></div>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-shape s1"></div>
+      <div class="hero-shape s2"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">✨ Portail Étudiant</div>
+      <h1 class="hero-title"  th:text="#{home.title}">Bienvenue</h1>
+      <p  class="hero-sub"    th:text="#{home.subtitle}">Sous-titre</p>
+
+      <div class="hero-actions">
+        <sec:authorize access="isAnonymous()">
+          <a th:href="@{/register}" class="btn-hp" th:text="#{home.cta.register}">S'inscrire</a>
+          <a th:href="@{/login}"    class="btn-ho" th:text="#{home.cta.login}">Se connecter</a>
+        </sec:authorize>
+        <sec:authorize access="isAuthenticated()">
+          <a th:href="@{/events}" class="btn-hp" th:text="#{nav.events}">Événements</a>
+        </sec:authorize>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat"><span class="sn">8+</span><span class="sl">Événements</span></div>
+        <div class="sdiv"></div>
+        <div class="stat"><span class="sn">3</span><span class="sl">Langues</span></div>
+        <div class="sdiv"></div>
+        <div class="stat"><span class="sn">100%</span><span class="sl">Gratuit</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES ===== -->
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title" th:text="#{home.features.title}">Pourquoi ?</h2>
+      <div class="features-grid">
+
+        <div class="fcard">
+          <div class="ficon fi-blue">🗓️</div>
+          <h3 th:text="#{home.feature.events}">Événements</h3>
+          <p  th:text="#{home.feature.events.desc}">...</p>
+        </div>
+
+        <div class="fcard">
+          <div class="ficon fi-green">👥</div>
+          <h3 th:text="#{home.feature.community}">Communauté</h3>
+          <p  th:text="#{home.feature.community.desc}">...</p>
+        </div>
+
+        <div class="fcard">
+          <div class="ficon fi-purple">🌍</div>
+          <h3 th:text="#{home.feature.multilang}">Multilingue</h3>
+          <p  th:text="#{home.feature.multilang.desc}">...</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <p>
+        <span th:text="#{nav.brand}">Événements Étudiants</span>
+        &copy; 2024 —
+        <span th:text="#{footer.rights}">Tous droits réservés</span>
+      </p>
+      <p class="footer-sub" th:text="#{footer.made}">...</p>
+    </div>
+  </footer>
+
+</body>
+</html>

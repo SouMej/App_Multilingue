@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}">
+<head>
+  <meta charset="UTF-8"/>
+  <title th:text="#{error.403.title}">Accès refusé</title>
+  <link rel="stylesheet" th:href="@{/resources/css/main.css}"/>
+</head>
+<body class="page-auth">
+  <div th:replace="~{common/navbar :: navbar}"></div>
+  <main class="auth-main">
+    <div class="auth-card" style="text-align:center">
+      <div class="auth-ico">🔒</div>
+      <h1 th:text="#{error.403.title}">Accès refusé</h1>
+      <p style="color:#6B7280;margin:12px 0 24px" th:text="#{error.403.msg}">Message</p>
+      <a th:href="@{/login}" class="btn btn-primary" th:text="#{nav.login}">Connexion</a>
+    </div>
+  </main>
+</body>
+</html>

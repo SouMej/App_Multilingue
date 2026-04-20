@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}">
+<head>
+  <meta charset="UTF-8"/>
+  <title th:text="#{error.404.title}">Page introuvable</title>
+  <link rel="stylesheet" th:href="@{/resources/css/main.css}"/>
+</head>
+<body class="page-auth">
+  <div th:replace="~{common/navbar :: navbar}"></div>
+  <main class="auth-main">
+    <div class="auth-card" style="text-align:center">
+      <div style="font-size:52px;margin-bottom:12px">🔍</div>
+      <h1 style="font-size:3rem;font-weight:800;color:#4F46E5">404</h1>
+      <h2 th:text="#{error.404.title}">Page introuvable</h2>
+      <p style="color:#6B7280;margin:12px 0 24px" th:text="#{error.404.msg}">Message</p>
+      <a th:href="@{/}" class="btn btn-primary" th:text="#{error.back}">Retour</a>
+    </div>
+  </main>
+</body>
+</html>
