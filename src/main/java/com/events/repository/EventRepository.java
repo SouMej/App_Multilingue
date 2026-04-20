@@ -24,7 +24,7 @@ public class EventRepository {
 
     public List<Event> findAll() {
         return sessionFactory.getCurrentSession()
-            .createQuery("FROM Event e ORDER BY e.eventDate ASC", Event.class)
+            .createQuery("SELECT DISTINCT e FROM Event e LEFT JOIN FETCH e.translations ORDER BY e.eventDate ASC", Event.class)
             .getResultList();
     }
 
@@ -33,7 +33,7 @@ public class EventRepository {
      * HQL avec paramètres nommés pour éviter les injections SQL.
      */
     public List<Event> search(String keyword, Event.EventType type) {
-        StringBuilder hql = new StringBuilder("FROM Event e WHERE 1=1 ");
+        StringBuilder hql = new StringBuilder("SELECT DISTINCT e FROM Event e LEFT JOIN FETCH e.translations WHERE 1=1 ");
         if (keyword != null && !keyword.isBlank()) {
             hql.append("AND (LOWER(e.title) LIKE :kw "
                      + "  OR LOWER(e.location) LIKE :kw "
