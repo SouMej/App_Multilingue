@@ -23,13 +23,13 @@
     <!-- Liens de navigation -->
     <div class="navbar-menu">
       <a th:href="@{/}" class="nav-link"
-         th:classappend="${#httpServletRequest.requestURI == '/' or
-                           #httpServletRequest.requestURI == '/home'} ? ' active'">
+         th:classappend="${#request != null and (#request.requestURI == '/' or
+                            #request.requestURI == '/home')} ? ' active'">
         <span th:text="#{nav.home}">Accueil</span>
       </a>
       <sec:authorize access="isAuthenticated()">
         <a th:href="@{/events}" class="nav-link"
-           th:classappend="${#httpServletRequest.requestURI.contains('/events')} ? ' active'">
+           th:classappend="${#request != null and #request.requestURI.contains('/events')} ? ' active'">
           <span th:text="#{nav.events}">Événements</span>
         </a>
       </sec:authorize>
