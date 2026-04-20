@@ -100,9 +100,9 @@
           <span class="free-bdg" th:if="${ev.free}"
                 th:text="#{events.card.free}">Gratuit</span>
 
-          <div class="ev-body">
-            <h3 class="ev-title" th:text="${ev.title}">Titre</h3>
-            <p  class="ev-desc"  th:text="${ev.description}">Description</p>
+          <div class="ev-body" th:with="tr=${ev.getTranslation(localeLanguage)}">
+            <h3 class="ev-title" th:text="${tr != null ? tr.title : ev.title}">Titre</h3>
+            <p  class="ev-desc"  th:text="${tr != null ? tr.description : ev.description}">Description</p>
           </div>
 
           <div class="ev-meta">

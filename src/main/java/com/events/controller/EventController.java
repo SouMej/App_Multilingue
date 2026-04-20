@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Locale;
 import java.util.List;
 
 /**
@@ -28,6 +29,7 @@ public class EventController {
     public String list(
             @RequestParam(value = "q",    required = false) String keyword,
             @RequestParam(value = "type", required = false) String type,
+            Locale locale,
             Model model) {
 
         // Récupère l'utilisateur connecté depuis la session Spring Security
@@ -49,6 +51,7 @@ public class EventController {
         model.addAttribute("selectedType", type);
         model.addAttribute("isSearch",     isSearch);
         model.addAttribute("resultCount",  events.size());
+        model.addAttribute("localeLanguage", locale != null ? locale.getLanguage() : "fr");
 
         return "events/list"; // -> /WEB-INF/views/events/list.html
     }
